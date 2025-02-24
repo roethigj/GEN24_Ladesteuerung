@@ -158,7 +158,7 @@ group by STRFTIME('%Y%m%d%H%M', Zeitpunkt) / 10 )
 		((Batterie_OUT - LAG(Batterie_OUT) OVER(ORDER BY Zeitpunkt))) AS VonBatterie,
 		((Batterie_IN - LAG(Batterie_IN) OVER(ORDER BY Zeitpunkt))) AS InBatterie,
         (Einspeisung - LAG(Einspeisung) OVER(ORDER BY Zeitpunkt)) AS Einspeisung,
-        Vorhersage,
+        -1 * Vorhersage AS Vorhersage,
         BattStatus
 from Alle_PVDaten)
  , Alle_PVDaten2 AS (
@@ -169,7 +169,7 @@ from Alle_PVDaten)
 	VonBatterie*60/ Zeitabstand    AS VonBatterie,
     InBatterie*60/ Zeitabstand     AS InBatterie,
 	Einspeisung*60/ Zeitabstand    AS Einspeisung,
-	Vorhersage,
+    -1 * Vorhersage AS Vorhersage,
     BattStatus
 FROM Alle_PVDaten1)
 , Netzladen AS (
@@ -182,7 +182,7 @@ select Zeitpunkt,
 		Einspeisung,
 		Produktion + Netzbezug - Einspeisung - InBatterie - Direktverbrauch AS Netzverbrauch,
 		Produktion + Netzbezug - Einspeisung + VonBatterie - InBatterie AS Gesamtverbrauch,
-		Vorhersage,
+        -1 * Vorhersage AS Vorhersage,
 		BattStatus
 FROM Alle_PVDaten2)
 SELECT 	Zeitpunkt,
@@ -194,7 +194,7 @@ SELECT 	Zeitpunkt,
         Einspeisung,
 		(CASE WHEN Direktverbrauch > 0 THEN Netzverbrauch ELSE Netzverbrauch + Direktverbrauch END) AS Netzverbrauch,
 		Gesamtverbrauch,
-		Vorhersage,
+        -1 * Vorhersage AS Vorhersage,
 		BattStatus
 FROM Netzladen
 ";
