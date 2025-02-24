@@ -12,22 +12,22 @@ class basics:
     def loadConfig(self, conf_files):
             # Damit die Variable config auch in der Funktion "getVarConf" vorhanden ist (global config)
             global config
-            # Damit kann man auch meherer configs nacheinander lesen
+            # Damit kann man auch mehrere configs nacheinander lesen
             try:
                 config
             except NameError:
                 config = configparser.ConfigParser()
             # Standard.ini lesen
             for conf_file in conf_files:
-                c_file = 'CONFIG/'+conf_file+'.ini'
+                c_file = 'CONFIG/' + conf_file+'.ini'
                 try:
                         config.read_file(open(c_file))
                         config.read(c_file)
-                except:
+                except Exception as e:
                         print("\nERROR: ", e, "\n")
             # _priv_ini lesen
             for conf_file in conf_files:
-                c_file = 'CONFIG/'+conf_file+'_priv.ini'
+                c_file = 'CONFIG/' + conf_file+'_priv.ini'
                 try:
                         config.read_file(open(c_file))
                         config.read(c_file)
