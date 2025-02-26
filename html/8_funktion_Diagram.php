@@ -169,7 +169,7 @@ from Alle_PVDaten)
 	VonBatterie*60/ Zeitabstand    AS VonBatterie,
     InBatterie*60/ Zeitabstand     AS InBatterie,
 	Einspeisung*60/ Zeitabstand    AS Einspeisung,
-    -1 * Vorhersage AS Vorhersage,
+    Vorhersage,
     BattStatus
 FROM Alle_PVDaten1)
 , Netzladen AS (
@@ -182,7 +182,7 @@ select Zeitpunkt,
 		Einspeisung,
 		Produktion + Netzbezug - Einspeisung - InBatterie - Direktverbrauch AS Netzverbrauch,
 		Produktion + Netzbezug - Einspeisung + VonBatterie - InBatterie AS Gesamtverbrauch,
-        -1 * Vorhersage AS Vorhersage,
+        Vorhersage,
 		BattStatus
 FROM Alle_PVDaten2)
 SELECT 	Zeitpunkt,
@@ -194,7 +194,7 @@ SELECT 	Zeitpunkt,
         Einspeisung,
 		(CASE WHEN Direktverbrauch > 0 THEN Netzverbrauch ELSE Netzverbrauch + Direktverbrauch END) AS Netzverbrauch,
 		Gesamtverbrauch,
-        -1 * Vorhersage AS Vorhersage,
+        Vorhersage,
 		BattStatus
 FROM Netzladen
 ";
